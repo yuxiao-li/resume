@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yuxiao Li — Business Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FCFCFA;
+    --ink:#15171C;
+    --body:#33383F;
+    --muted:#727A85;
+    --rule:#E4E5E1;
+    --rule-soft:#EFF0ED;
+    --accent:#33628F;
+    --accent-tint:#EAF0F5;
+    --measure:44rem;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--body);
+    font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:15px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .page{max-width:var(--measure);margin:0 auto;padding:5.5rem 1.75rem 6rem;}
+
+  /* ===== load orchestration ===== */
+  .lift{opacity:0;transform:translateY(10px);}
+  .ready .lift{
+    animation:lift .62s var(--ease) both;
+    animation-delay:calc(var(--i,0) * 70ms);
+  }
+  @keyframes lift{to{opacity:1;transform:none;}}
+
+  /* ===== masthead ===== */
+  .name{
+    margin:0;
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:500;
+    font-size:clamp(1.9rem,6vw,2.6rem);
+    letter-spacing:.06em;
+    color:var(--ink);
+    line-height:1.1;
+  }
+  .standfirst{margin:1.1rem 0 0;max-width:32rem;}
+
+  /* signature motif: a point estimate and its interval */
+  .motif{margin:2.1rem 0 1.9rem;height:11px;position:relative;}
+  .motif i{position:absolute;background:var(--accent);display:block;}
+  .motif .bar{
+    left:50%;right:50%;top:5px;height:1px;opacity:.4;
+  }
+  .ready .motif .bar{animation:span 1s var(--ease) .45s both;}
+  @keyframes span{to{left:0;right:0;}}
+
+  .motif .cap{top:0;width:1px;height:11px;opacity:0;}
+  .motif .cap.lo{left:0;}
+  .motif .cap.hi{right:0;}
+  .ready .motif .cap{animation:showcap .4s ease 1.3s both;}
+  @keyframes showcap{to{opacity:.4;}}
+
+  .motif .dot{
+    left:38%;top:1.5px;width:8px;height:8px;border-radius:50%;
+    opacity:0;transform:scale(.2);
+  }
+  .ready .motif .dot{animation:settle .5s var(--ease) 1.45s both;}
+  @keyframes settle{
+    0%{opacity:0;transform:scale(.2);}
+    60%{opacity:1;transform:scale(1.25);}
+    100%{opacity:1;transform:scale(1);}
+  }
+
+  .contact{
+    display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;
+    margin:0;padding:0;list-style:none;
+    font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.02em;
+  }
+  .contact a{
+    color:var(--muted);text-decoration:none;
+    border-bottom:1px solid transparent;padding-bottom:1px;
+    transition:color .2s ease,border-color .2s ease;
+  }
+  .contact a:hover,.contact a:focus-visible{color:var(--accent);border-bottom-color:var(--accent);}
+
+  /* ===== sections ===== */
+  .section{margin-top:3.4rem;padding-top:1.15rem;border-top:1px solid var(--rule);}
+  .section-label{
+    margin:0 0 1.6rem;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:.7rem;font-weight:500;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);
+  }
+
+  /* ===== scroll reveal ===== */
+  .obs{opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
+  .obs.seen{opacity:1;transform:none;}
+  .obs.d1{transition-delay:.08s;}
+  .obs.d2{transition-delay:.16s;}
+  .obs.d3{transition-delay:.24s;}
+
+  /* ===== entries ===== */
+  .entry{position:relative;padding-left:1rem;margin-left:-1rem;transition:background .28s ease;}
+  .entry::before{
+    content:"";position:absolute;left:0;top:.15rem;bottom:.15rem;width:2px;
+    background:var(--accent);transform:scaleY(0);transform-origin:top;
+    transition:transform .34s var(--ease);
+  }
+  .entry:hover::before,.entry:focus-within::before{transform:scaleY(1);}
+  .entry:hover .entry-title{color:var(--accent);}
+
+  .entry + .entry{margin-top:2.3rem;padding-top:2.1rem;border-top:1px solid var(--rule-soft);}
+
+  .entry-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.2rem 1.5rem;}
+  .entry-title{margin:0;font-size:1rem;font-weight:600;color:var(--ink);letter-spacing:-.005em;transition:color .24s ease;}
+  .entry-date{font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--muted);white-space:nowrap;}
+  .entry-meta{margin:.4rem 0 0;font-family:"IBM Plex Mono",monospace;font-size:.73rem;color:var(--accent);letter-spacing:.02em;}
+
+  .points{margin:1rem 0 0;padding:0;list-style:none;}
+  .points li{position:relative;padding-left:1.15rem;margin-top:.72rem;}
+  .points li:first-child{margin-top:0;}
+  .points li::before{
+    content:"";position:absolute;left:0;top:.72em;height:1px;
+    width:0;background:var(--muted);opacity:.65;
+    transition:width .45s var(--ease);
+  }
+  .seen .points li::before{width:5px;}
+  .points li:nth-child(2)::before{transition-delay:.07s;}
+  .points li:nth-child(3)::before{transition-delay:.14s;}
+  .points li:nth-child(4)::before{transition-delay:.21s;}
+  .points li:nth-child(5)::before{transition-delay:.28s;}
+  .points strong{font-weight:600;color:var(--ink);}
+
+  .degree{margin:.3rem 0 0;}
+
+  /* ===== specification explorer ===== */
+  .spec{
+    margin:1.35rem 0 0;
+    padding:1.1rem 1.15rem 1rem;
+    background:var(--accent-tint);
+    border-radius:3px;
+  }
+  .spec-caption{
+    margin:0 0 .95rem;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:.7rem;letter-spacing:.03em;color:var(--muted);
+  }
+  .spec-tabs{display:flex;gap:.4rem;margin:0 0 1.15rem;flex-wrap:wrap;}
+  .spec-tabs button{
+    font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.03em;
+    padding:.3rem .6rem;border-radius:2px;cursor:pointer;
+    border:1px solid var(--rule);background:var(--paper);color:var(--muted);
+    transition:color .2s ease,border-color .2s ease,background .2s ease;
+  }
+  .spec-tabs button:hover{color:var(--accent);border-color:var(--accent);}
+  .spec-tabs button[aria-selected="true"]{
+    background:var(--accent);border-color:var(--accent);color:#fff;
+  }
+
+  .plot{position:relative;height:44px;margin-bottom:.55rem;}
+  .plot .zero{
+    position:absolute;top:0;bottom:14px;width:1px;
+    background:var(--muted);opacity:.35;
+  }
+  .plot .zero span{
+    position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);
+    font-family:"IBM Plex Mono",monospace;font-size:.62rem;color:var(--muted);
+  }
+  .plot .ci{
+    position:absolute;top:13px;height:1px;background:var(--accent);opacity:.55;
+    transition:left .55s var(--ease),right .55s var(--ease);
+  }
+  .plot .tick{
+    position:absolute;top:8px;width:1px;height:11px;background:var(--accent);opacity:.55;
+    transition:left .55s var(--ease);
+  }
+  .plot .est{
+    position:absolute;top:9.5px;width:8px;height:8px;border-radius:50%;
+    background:var(--accent);margin-left:-4px;
+    transition:left .55s var(--ease);
+  }
+  .spec-readout{
+    display:flex;flex-wrap:wrap;gap:.15rem 1.2rem;
+    font-family:"IBM Plex Mono",monospace;font-size:.71rem;color:var(--muted);
+  }
+  .spec-readout b{font-weight:500;color:var(--ink);}
+
+  /* ===== skills ===== */
+  .skills{margin:0;display:grid;grid-template-columns:11rem 1fr;gap:.85rem 1.5rem;}
+  .skills dt{
+    font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.05em;
+    text-transform:uppercase;color:var(--muted);padding-top:.18rem;
+  }
+  .skills dd{margin:0;}
+
+  /* ===== footer ===== */
+  .footer{
+    margin-top:3.4rem;padding-top:1.15rem;border-top:1px solid var(--rule);
+    font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--muted);
+    display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1rem;
+  }
+  .footer button{
+    font:inherit;color:var(--muted);background:none;border:0;
+    border-bottom:1px solid var(--rule);padding:0 0 1px;cursor:pointer;
+    transition:color .2s ease,border-color .2s ease;
+  }
+  .footer button:hover,.footer button:focus-visible{color:var(--accent);border-bottom-color:var(--accent);}
+
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px;}
+
+  @media (max-width:34rem){
+    .page{padding:3.25rem 1.25rem 4rem;}
+    .skills{grid-template-columns:1fr;gap:.25rem;}
+    .skills dd{margin-bottom:.7rem;}
+    .entry{padding-left:.75rem;margin-left:-.75rem;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    .lift,.ready .lift{opacity:1;transform:none;animation:none;}
+    .obs{opacity:1;transform:none;transition:none;}
+    .points li::before{width:5px;transition:none;}
+    .motif .bar{left:0;right:0;animation:none;}
+    .motif .cap{opacity:.4;animation:none;}
+    .motif .dot{opacity:1;transform:none;animation:none;}
+    .plot .ci,.plot .tick,.plot .est{transition:none;}
+    .entry::before{transition:none;}
+  }
+
+  @media print{
+    :root{--paper:#fff;--ink:#000;--body:#1a1a1a;--muted:#555;--accent:#000;--accent-tint:#fff;}
+    body{font-size:10pt;line-height:1.42;}
+    .page{max-width:none;padding:0;}
+    .lift,.obs{opacity:1;transform:none;animation:none;transition:none;}
+    .points li::before{width:5px;}
+    .entry::before{display:none;}
+    .footer,.spec-tabs,.motif{display:none;}
+    .spec{background:none;padding:0;border-left:2px solid #999;padding-left:.6rem;}
+    .plot{display:none;}
+    .section{margin-top:1.3rem;padding-top:.6rem;}
+    .entry + .entry{margin-top:1rem;padding-top:.9rem;}
+    .entry,.section{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header>
+    <h1 class="name lift" style="--i:0">Yuxiao&nbsp;Li</h1>
+    <p class="standfirst lift" style="--i:1">
+      Economics and data science double major applying to business analyst roles in
+      financial services. I build the analysis, then test where it breaks.
+    </p>
+
+    <div class="motif" aria-hidden="true">
+      <i class="bar"></i><i class="cap lo"></i><i class="cap hi"></i><i class="dot"></i>
+    </div>
+
+    <ul class="contact lift" style="--i:4">
+      <li><a href="mailto:yuxiao.li.work@gmail.com">yuxiao.li.work@gmail.com</a></li>
+      <li><a href="tel:+14809998988">+1 480 999 8988</a></li>
+      <li><a href="https://linkedin.com/in/yuxiao-li" rel="noopener">linkedin.com/in/yuxiao-li</a></li>
+    </ul>
+  </header>
+
+  <section class="section">
+    <h2 class="section-label obs">Education</h2>
+    <div class="entry obs d1">
+      <div class="entry-head">
+        <h3 class="entry-title">University of Wisconsin–Madison</h3>
+        <span class="entry-date">Expected Aug 2026</span>
+      </div>
+      <p class="degree">B.A. Economics (Mathematical Emphasis) &amp; B.A. Data Science</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-label obs">Experience</h2>
+    <article class="entry obs d1">
+      <div class="entry-head">
+        <h3 class="entry-title">Co-Founder &amp; Business Analyst — Hawthorn Kombucha</h3>
+        <span class="entry-date">Jan 2025 – Present</span>
+      </div>
+      <ul class="points">
+        <li>Designed a <strong>9-cell factorial pricing experiment</strong> (3 discount levels × 3 message frames) across 5 retail venues, using a priori power analysis (α = .05, 80% power) to size the sample at <strong>~450 observations</strong> and block randomization to keep treatment cells balanced across venues and days.</li>
+        <li>Authored the pre-registered analysis plan and data-quality protocol: venue-clustered logistic regression with discount × message interaction terms, Holm–Bonferroni correction across pairwise contrasts, and a nightly automated merge of POS exports with survey records that flagged duplicate and missing IDs and alerted on serial-range gaps.</li>
+        <li>Built P&amp;L, cash-flow, and revenue forecasting models driving pricing, budgeting, and investment planning; authored the business plan, financial projections, and investor presentations communicating analytical findings, business risks, and growth opportunities to angel investors.</li>
+        <li>Developed executive dashboards and financial reports translating analytical findings into actionable business insights for pricing optimization and strategic planning.</li>
+        <li>Gathered and prioritized business requirements from co-founders in two-week iteration cycles, documenting process flows, assumptions, and data definitions to keep planning traceable and repeatable.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="section">
+    <h2 class="section-label obs">Projects</h2>
+
+    <article class="entry obs d1">
+      <div class="entry-head">
+        <h3 class="entry-title">Credit-Risk Modeling, Documentation &amp; Fair-Lending Assessment</h3>
+        <span class="entry-date">Nov 2024 – Mar 2025</span>
+      </div>
+      <p class="entry-meta">Python · XGBoost · scikit-learn</p>
+      <ul class="points">
+        <li>Built credit-default classification models in <strong>Python (XGBoost, logistic regression)</strong> reaching <strong>AUC 0.82</strong>, translating lending objectives into data preparation, modeling, and reporting deliverables — with automated data-quality checks run across multiple sources beforehand.</li>
+        <li>Ran <strong>disparate-impact testing</strong> on model outcomes, quantifying an <strong>8-percentage-point gap across demographic groups</strong>, assessing the associated fair-lending and compliance exposure, and recommending mitigation strategies.</li>
+        <li>Produced model documentation to a compliance-ready standard — business rules, data definitions, model assumptions, and validation procedures — plus executive summaries of methodology, findings, business impact, and risk for non-technical reviewers.</li>
+      </ul>
+    </article>
+
+    <article class="entry obs d1">
+      <div class="entry-head">
+        <h3 class="entry-title">Sports Analytics — Tactical Timing Optimization Study</h3>
+        <span class="entry-date">Sep – Dec 2025</span>
+      </div>
+      <p class="entry-meta">R · dplyr · ggplot2 · sole author</p>
+      <ul class="points">
+        <li>Independently scoped and delivered an end-to-end analysis of <strong>5,200+ competition records</strong> integrated from three relational source tables — a project scope typically staffed by 3–4 person teams.</li>
+        <li>Defined the core success metric and business rules driving the analysis (a "high-value outcome" threshold and five game-state categories), and built a stratified comparison framework isolating elite-level events as a benchmark group.</li>
+        <li>Built a logistic regression model with an interaction term between tactic usage and game state, then generated a <strong>9 × 8 counterfactual scenario grid</strong> to quantify incremental lift in every situation — finding the tactic <strong>raised high-value outcomes from 21% to 46%</strong> and pinpointing a specific deployment window as optimal.</li>
+        <li>Delivered findings through a heatmap and faceted visualization suite in R plus a written report documenting assumptions, data limitations, and a concrete situation-specific recommendation for non-technical stakeholders.</li>
+      </ul>
+    </article>
+
+    <article class="entry obs d1">
+      <div class="entry-head">
+        <h3 class="entry-title">Trade Exposure &amp; Local Economic Outcomes</h3>
+        <span class="entry-date">Jan – May 2026</span>
+      </div>
+      <p class="entry-meta">Stata · R · 4-person research team</p>
+      <ul class="points">
+        <li>Replicated a published <em>American Economic Review</em> study's full instrumental-variables pipeline in Stata, <strong>matching all six published specifications to three decimal places</strong> (N = 1,444) to validate the codebase before extending it to new outcomes.</li>
+        <li>Built a data harmonization pipeline in R integrating <strong>four independent sources across 722 regions and 13 time periods</strong>, mapping records between mismatched boundary definitions with documented primary and fallback weighting rules.</li>
+        <li>Designed a <strong>15-check automated data-validation suite</strong> (referential integrity, duplicate detection, weight-sum reconciliation) with severity flags, and stress-tested results across four mapping specifications and multiple variance estimators — documenting that the headline estimate was <strong>not robust to control specification</strong> rather than reporting only the favorable result.</li>
+      </ul>
+
+      <div class="spec">
+        <p class="spec-caption">2020 estimate, 95% interval — add controls and watch it collapse</p>
+        <div class="spec-tabs" role="tablist" aria-label="Control specification">
+          <button role="tab" data-spec="0" aria-selected="true">Minimal</button>
+          <button role="tab" data-spec="1" aria-selected="false">Core controls</button>
+          <button role="tab" data-spec="2" aria-selected="false">Full controls</button>
+        </div>
+        <div class="plot" aria-hidden="true">
+          <span class="zero"><span>0</span></span>
+          <i class="ci"></i><i class="tick lo"></i><i class="tick hi"></i><i class="est"></i>
+        </div>
+        <p class="spec-readout" role="status">
+          <span>estimate <b id="sv-est">0.0087</b></span>
+          <span>95% CI <b id="sv-ci">[−0.0034, 0.0209]</b></span>
+          <span>p <b id="sv-p">0.159</b></span>
+        </p>
+      </div>
+    </article>
+  </section>
+
+  <section class="section">
+    <h2 class="section-label obs">Skills</h2>
+    <dl class="skills obs d1">
+      <dt>Programming</dt>
+      <dd>Python (Pandas, NumPy, scikit-learn), R (Tidyverse, ggplot2), Stata, SQL</dd>
+      <dt>Analysis &amp; BI</dt>
+      <dd>Excel, Google Sheets, Power BI, Tableau</dd>
+      <dt>Business analysis</dt>
+      <dd>Requirements gathering, data mapping, process flow documentation, data quality validation &amp; testing, model documentation, KPI development, ETL design, business reporting, agile workflow support</dd>
+      <dt>Methods</dt>
+      <dd>A/B testing &amp; experimental design, financial modeling, forecasting, logistic regression, statistical analysis, econometrics</dd>
+      <dt>Tools</dt>
+      <dd>GitHub, Microsoft Visio, LaTeX</dd>
+    </dl>
+  </section>
+
+  <footer class="footer">
+    <span>Last updated July 2026</span>
+    <button type="button" id="print">Print or save as PDF</button>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* page-load sequence */
+  requestAnimationFrame(function(){ document.body.classList.add('ready'); });
+
+  /* scroll reveal */
+  var items = document.querySelectorAll('.obs');
+  if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach(function(el){ el.classList.add('seen'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.1 });
+    items.forEach(function(el){ io.observe(el); });
+  }
+
+  /* specification explorer — figures from the project's own results table */
+  var SPECS = [
+    { est: 0.0087, lo: -0.0034, hi: 0.0209, p: '0.159' },
+    { est: 0.0002, lo: -0.0050, hi: 0.0055, p: '0.930' },
+    { est:-0.0018, lo: -0.0074, hi: 0.0038, p: '0.537' }
+  ];
+  var DMIN = -0.012, DMAX = 0.024;
+  var pct = function(v){ return ((v - DMIN) / (DMAX - DMIN)) * 100; };
+  var fmt = function(v){ return (v < 0 ? '\u2212' : '') + Math.abs(v).toFixed(4); };
+
+  var plot = document.querySelector('.plot');
+  if (!plot) return;
+  var ci   = plot.querySelector('.ci'),
+      tLo  = plot.querySelector('.tick.lo'),
+      tHi  = plot.querySelector('.tick.hi'),
+      est  = plot.querySelector('.est'),
+      zero = plot.querySelector('.zero');
+  var oEst = document.getElementById('sv-est'),
+      oCi  = document.getElementById('sv-ci'),
+      oP   = document.getElementById('sv-p');
+
+  zero.style.left = pct(0) + '%';
+
+  function render(i){
+    var s = SPECS[i];
+    ci.style.left  = pct(s.lo) + '%';
+    ci.style.right = (100 - pct(s.hi)) + '%';
+    tLo.style.left = pct(s.lo) + '%';
+    tHi.style.left = pct(s.hi) + '%';
+    est.style.left = pct(s.est) + '%';
+    oEst.textContent = fmt(s.est);
+    oCi.textContent  = '[' + fmt(s.lo) + ', ' + fmt(s.hi) + ']';
+    oP.textContent   = s.p;
+  }
+
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.spec-tabs button'));
+  tabs.forEach(function(btn, i){
+    btn.addEventListener('click', function(){
+      tabs.forEach(function(b){ b.setAttribute('aria-selected','false'); });
+      btn.setAttribute('aria-selected','true');
+      render(i);
+    });
+  });
+
+  render(0);
+})();
+
+document.getElementById('print').addEventListener('click', function(){ window.print(); });
+</script>
+</body>
+</html>
